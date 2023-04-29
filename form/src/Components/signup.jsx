@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import * as yup from "yup";
 import { useFormik } from "formik";
 
 const Signup = () => {
@@ -8,12 +9,23 @@ const Signup = () => {
 			email: "",
 			password: "",
 		},
-
+		validationSchema: yup.object({
+			name: yup
+				.string()
+				.min(4, "name must have atleast 4 characters")
+				.required(),
+			email: yup.string().email().required(),
+			password: yup
+				.string()
+				.min(6, "Password must have atleast 6 characters")
+				.required(),
+		}),
 		onSubmit: (values, { resetForm }) => {
 			console.log(values);
 			resetForm({ values: "" });
 		},
 	});
+
 	return (
 		<div>
 			<h2>Form Signpu </h2>
@@ -27,6 +39,10 @@ const Signup = () => {
 						onChange={formik.handleChange}
 						value={formik.values.name}
 					/>
+					<br />
+					{formik.touched.name && formik.errors.name && (
+						<span className="red">{formik.errors.name}</span>
+					)}
 				</div>
 				<div>
 					<label htmlFor="email">Email</label>
@@ -37,6 +53,10 @@ const Signup = () => {
 						onChange={formik.handleChange}
 						value={formik.values.email}
 					/>
+					<br />
+					{formik.touched.email && formik.errors.email && (
+						<span className="red">{formik.errors.email}</span>
+					)}
 				</div>
 				<div>
 					<label htmlFor="password">password</label>
@@ -47,6 +67,10 @@ const Signup = () => {
 						onChange={formik.handleChange}
 						value={formik.values.password}
 					/>
+					<br />
+					{formik.touched.password && formik.errors.password && (
+						<span className="red">{formik.errors.password}</span>
+					)}
 				</div>
 				<button type="submit">Signpu</button>
 			</form>
